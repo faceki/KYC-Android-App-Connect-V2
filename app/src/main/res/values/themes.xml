@@ -1,0 +1,32 @@
+<resources xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <style name="Theme.FacekiTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/black_bg</item>
+        <item name="colorPrimaryVariant">@color/black_bg</item>
+        <item name="colorOnPrimary">@color/black_bg</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/black_bg</item>
+        <item name="colorSecondaryVariant">@color/black_bg</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">@color/white</item>
+        <!-- Customize your theme here. -->
+    </style>
+
+    <style name="Theme.FaceKiApp.NoActionBar" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:statusBarColor" tools:targetApi="l">@color/white</item>
+
+    </style>
+
+    <style name="Theme.FaceKiApp.AppBarOverlay" parent="ThemeOverlay.AppCompat.Light">
+    <item name="android:statusBarColor" tools:targetApi="l">@color/white</item>
+    </style>
+
+    <style name="Theme.FaceKiApp.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" >
+        <item name="android:statusBarColor" tools:targetApi="l">@color/white</item>
+s    </style>
+</resources>

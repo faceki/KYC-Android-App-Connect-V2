@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">فيس كيكي</string>
+    <string name="take_a_selfie">التقط صورة</string>
+    <string name="fit_your_face_in_the_middle">ضع وجهك في الوسط</string>
+    <string name="powered_by">مشغل بواسطة</string>
+    <string name="error">خطأ</string>
+    <string name="check_internet">تحقق من وجود الانترنت</string>
+    <string name="next">التالي</string>
+    <string name="verify_your_identity">تحقق من هويتك</string>
+    <string name="it_will_take_only_few_seconds">لحظات سيستغرق الأمر بضع ثواني</string>
+    <string name="scan_id_front_side">مسح الجانب الأمامي لبطاقة الهوية</string>
+    <string name="scan_id_back_side">مسح الجانب الخلفي لمعرف المسح</string>
+    <string name="take_a_selfie_picture">التقط صورة سيلفي</string>
+    <string name="start">ابدأ</string>
+    <string name="_1">1</string>
+    <string name="check_readability">تاكد من الوضوح (مقروئة)</string>
+    <string name="retake">اعد لالتقاط الصورة</string>
+    <string name="confirm">أكد</string>
+    <string name="ensure_all_your_data_on_your_document_nis_visible_and_readable">تأكد من جميع معلوماتك انها واضحة و مقروئة</string>
+    <string name="scan_your_id_card">صور هوتك</string>
+    <string name="place_your_id_card_within_the_frame_nand_make_sure_it_s_clear_with_no_reflections">ضع بطاقة هويتك داخل الإطار ، \ n وتأكد من أنها واضحة وخالية من الانعكاسات.</string>
+    <string name="flip_camera">قلب الكاميرا</string>
+    <string name="invalid">غير صالح</string>
+    <string name="successful">تم بنجاح</string>
+    <string name="upload">تحميل</string>
+    <string name="finish">ينهي</string>
+    <string name="scan">مسح</string>
+
+    <string name="permission_not_granted_by_user"> لايوجد اذن من قبل المستخدم</string>
+    <string name="could_not_set_up_the_face_detector">كاشف الوجة لايعمل</string>
+    <string name="no_face_found"> لم يتم العثور على الوجة</string>
+    <string name="wrong_url">رابط خطأ</string>
+    <string name="something_went_wrong">حدث خطأ ما. أعد المحاولة من فضلك!</string>
+    <string name="front_side">الجانب الامامي</string>
+    <string name="back_side">الجانب الخلفي</string>
+    <string name="place_your">ضع الخاص بك</string>
+    <string name="within_the_frame_nand_make_sure_it_s_clear_with_no_reflections">داخل الإطار ، \ n وتأكد من أنه واضح بدون انعكاسات.</string>
+    <string name="back_to_home">العودة إلى المنزل</string>
+</resources>

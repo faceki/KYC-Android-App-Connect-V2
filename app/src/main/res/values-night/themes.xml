@@ -1,0 +1,16 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.FaceKiApp" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/black_bg</item>
+        <item name="colorPrimaryVariant">@color/black_bg</item>
+        <item name="colorOnPrimary">@color/black_bg</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/black_bg</item>
+        <item name="colorSecondaryVariant">@color/black_bg</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">@color/white</item>
+        <!-- Customize your theme here. -->
+    </style>
+</resources>

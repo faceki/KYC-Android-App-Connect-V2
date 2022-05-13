@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">facekikyc</string>
+    <string name="take_a_selfie">Take a Selfie</string>
+    <string name="fit_your_face_in_the_middle">Fit your face in the middle</string>
+    <string name="powered_by">powered by</string>
+    <string name="error">Error</string>
+    <string name="check_internet">Check your internet connection</string>
+    <string name="next">Next</string>
+    <string name="verify_your_identity">Verify Your Identity</string>
+    <string name="it_will_take_only_few_seconds">It will take only few seconds</string>
+    <string name="scan_id_front_side">Scan ID front side</string>
+    <string name="scan_id_back_side">Scan ID back side</string>
+    <string name="take_a_selfie_picture">Take a selfie picture</string>
+    <string name="start">start</string>
+    <string name="_1">1</string>
+    <string name="check_readability">Check Readability</string>
+    <string name="retake">retake</string>
+    <string name="confirm">confirm</string>
+    <string name="ensure_all_your_data_on_your_document_nis_visible_and_readable">Ensure all your data on your document\nis visible and readable.</string>
+    <string name="scan_your_id_card">Scan your ID Card</string>
+    <string name="place_your_id_card_within_the_frame_nand_make_sure_it_s_clear_with_no_reflections">Place your ID card within the frame,\nand make sure it\'s clear with no reflections.</string>
+    <string name="flip_camera">Flip Camera</string>
+    <string name="invalid">Invalid</string>
+    <string name="successful">Successful</string>
+    <string name="upload">upload</string>
+    <string name="finish">finish</string>
+    <string name="scan">Scan</string>
+
+    <string name="permission_not_granted_by_user">Permissions not granted by the user.</string>
+    <string name="could_not_set_up_the_face_detector">Could not set up the face detector!</string>
+    <string name="no_face_found">No face found!</string>
+    <string name="wrong_url">wrong url!</string>
+    <string name="something_went_wrong">Something went wrong please try again!</string>
+    <string name="front_side">front side</string>
+    <string name="back_side">back side</string>
+    <string name="place_your">Place your</string>
+    <string name="within_the_frame_nand_make_sure_it_s_clear_with_no_reflections"> within the frame,\nand make sure it\'s clear with no reflections.</string>
+    <string name="back_to_home">Back to Home</string>
+</resources>

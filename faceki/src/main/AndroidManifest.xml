@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.facekikycverification">
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-feature android:name="android.hardware.camera.any" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:name="com.facekikycverification.utils.MyApplication"
+        android:allowBackup="true"
+        android:largeHeap="true"
+        android:requestLegacyExternalStorage="true"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Faceki"
+        android:usesCleartextTraffic="true">
+        <activity
+            android:name="com.facekikycverification.ui.Successful"
+            android:screenOrientation="portrait"
+            android:exported="false" />
+        <activity
+            android:name="com.facekikycverification.ui.ShowIdentity"
+            android:screenOrientation="portrait"
+            android:exported="false" />
+        <activity
+            android:name="com.facekikycverification.ui.IdentityDetection"
+            android:screenOrientation="portrait"
+            android:exported="false" />
+        <activity
+            android:name="com.facekikycverification.ui.SdkSetting"
+            android:screenOrientation="portrait"
+            android:exported="false" />
+        <activity
+            android:name="com.facekikycverification.ui.FaceDetection"
+            android:screenOrientation="portrait"
+            android:exported="false" />
+        <activity
+            android:name="com.facekikycverification.ui.MainActivity"
+            android:exported="true">
+           <!-- <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>-->
+        </activity>
+
+        <meta-data
+            android:name="com.google.android.gms.vision.DEPENDENCIES"
+            android:value="face" />
+    </application>
+
+</manifest>
