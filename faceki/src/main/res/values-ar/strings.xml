@@ -37,4 +37,5 @@
     <string name="place_your">ضع الخاص بك</string>
     <string name="within_the_frame_nand_make_sure_it_s_clear_with_no_reflections">داخل الإطار ، \ n وتأكد من أنه واضح بدون انعكاسات.</string>
     <string name="back_to_home">العودة إلى المنزل</string>
+    <string name="back">Back</string>
 </resources>

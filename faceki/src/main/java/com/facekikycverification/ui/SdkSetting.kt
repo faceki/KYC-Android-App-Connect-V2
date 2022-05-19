@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.whenCreated
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.facekikycverification.R
@@ -85,6 +86,9 @@ class SdkSetting : AppCompatActivity(), IApiCallback {
 
     override fun onStart() {
         super.onStart()
+        binding.goBackToRoot.setOnClickListener {
+            finish()
+        }
 
         binding.start.setOnClickListener {
             when (binding.start.text) {

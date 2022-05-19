@@ -33,6 +33,7 @@
     <string name="something_went_wrong">Something went wrong please try again!</string>
     <string name="front_side">front side</string>
     <string name="back_side">back side</string>
+    <string name="back">Back</string>
     <string name="place_your">Place your</string>
     <string name="within_the_frame_nand_make_sure_it_s_clear_with_no_reflections"> within the frame,\nand make sure it\'s clear with no reflections.</string>
     <string name="back_to_home">Back to Home</string>
