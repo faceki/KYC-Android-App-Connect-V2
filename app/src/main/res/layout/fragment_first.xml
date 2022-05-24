@@ -4,9 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/parent"
-    >
-
+    android:id="@+id/parent">
     <com.budiyev.android.codescanner.CodeScannerView
         android:id="@+id/scanner_view"
         android:layout_width="match_parent"
@@ -21,29 +19,54 @@
         app:frameAspectRatioWidth="1"
         app:frameAspectRatioHeight="1"
         app:frameSize="0.75"
-
         app:frameThickness="2dp"
         app:maskColor="#77000000"/>
-
     <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:cardCornerRadius="18dp"
         app:cardElevation="0dp"
-
+        android:background="@color/white"
+        android:layout_gravity="start"
+        android:layout_marginTop="40dp"
+        android:layout_marginStart="@dimen/fab_margin">
+     <ImageButton
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:padding="5dp"
+        android:src="@drawable/ic_image"
+        android:scaleType="centerInside"
+        android:id="@+id/btn_gallery"
+        android:background="@null"/>
+    </androidx.cardview.widget.CardView>
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="18dp"
+        app:cardElevation="0dp"
+        android:background="@color/white"
         android:layout_gravity="end"
         android:layout_marginTop="40dp"
         android:layout_marginRight="@dimen/fab_margin"
         >
+
+
     <ImageButton
         android:layout_width="35dp"
         android:layout_height="35dp"
-android:padding="5dp"
-        android:src="@drawable/trashbin"
+        android:padding="5dp"
+        android:src="@drawable/ic_trash"
         android:scaleType="centerInside"
         android:id="@+id/btn_reset"
-        android:background="@null"
-        app:tint="@android:color/darker_gray" />
+        android:background="@null"/>
     </androidx.cardview.widget.CardView>
-
+    <ProgressBar
+        android:visibility="gone"
+        android:id="@+id/progressBar_cyclic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:minHeight="40dp"
+        android:indeterminate="true"
+        android:minWidth="40dp" />
 </FrameLayout>
