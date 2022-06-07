@@ -12,8 +12,8 @@ android {
         applicationId "com.faceki.connectapp"
         minSdk 21
         targetSdk 31
-        versionCode 9
-        versionName "1.0.9"
+        versionCode 11
+        versionName "1.0.11"
 
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }

@@ -33,13 +33,12 @@ import java.io.FileNotFoundException
 import java.util.*
 import android.os.AsyncTask
 import android.app.ProgressDialog
+import android.graphics.Matrix
+import android.util.Log
+import android.util.Log.INFO
+import com.google.zxing.BarcodeFormat
 
-
-
-
-
-
-
+import com.google.zxing.DecodeHintType
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
@@ -54,8 +53,8 @@ class FirstFragment : Fragment() {
     private var codeScanner: CodeScanner? = null
     private var statusBarIsVisible : Boolean = false;
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
 
         _binding = FragmentFirstBinding.inflate(inflater, container, false)
@@ -69,7 +68,7 @@ class FirstFragment : Fragment() {
 
 
         binding.btnReset.setOnClickListener{
-           reset()
+            reset()
         }
         binding.btnGallery.setOnClickListener{
             openGallery()
@@ -87,7 +86,7 @@ class FirstFragment : Fragment() {
 
     }
     private val checkPermission = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
-    val granted = permissions.entries.all {
+        val granted = permissions.entries.all {
             it.value == true
         }
         if (granted) {
@@ -146,13 +145,13 @@ class FirstFragment : Fragment() {
     private fun callFaceKiVerification(){
         val emailid = FaceKiPreferences.getEmailId(requireActivity())
 
-          if(emailid != null && emailid.length != 0){
-              val value = FaceKiPreferences.getClientId(requireActivity())  +"|" + FaceKiPreferences.getKeyName(requireActivity())+"|"+ emailid
-              goToVerification(value)
-          }
+        if(emailid != null && emailid.length != 0){
+            val value = FaceKiPreferences.getClientId(requireActivity())  +"|" + FaceKiPreferences.getKeyName(requireActivity())+"|"+ emailid
+            goToVerification(value)
+        }
 //        else
 //          {
-              startScan()
+        startScan()
 //          }
     }
 
@@ -160,7 +159,7 @@ class FirstFragment : Fragment() {
      * start scanner
      * @return void
      */
-  private fun startScan(){
+    private fun startScan(){
 
         codeScanner = CodeScanner(requireActivity().applicationContext,binding.scannerView )
         //default values
@@ -174,9 +173,19 @@ class FirstFragment : Fragment() {
         //callbacks
         codeScanner!!.decodeCallback = DecodeCallback {
             activity?.runOnUiThread{
-               var decryptValue =   Utility.decrypt(it.text,"ABCDEF1234567890")
+                try{
+                    var decryptValue =   Utility.decrypt(it.text,"ABCDEF1234567890")
+                    goToVerification(decryptValue)
+                }
+                catch (e: Exception){
+                    e.printStackTrace()
+                    Toast.makeText(
+                        requireActivity(),
+                        "Invalid QR code",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
 
-                goToVerification(decryptValue)
             }
         }
 
@@ -207,25 +216,25 @@ class FirstFragment : Fragment() {
      * @param decryptValue - decrypt value get from encrypted text from QR
      * @return void
      */
-   private fun goToVerification(decryptValue:String?){
-       if(decryptValue != null){
-           var values = decryptValue.split('|')
+    private fun goToVerification(decryptValue:String?){
+        if(decryptValue != null){
+            var values = decryptValue.split('|')
             if(values[1] == "$"+"fki$" && values[1].length == 5) {
 
-           FaceKiPreferences.saveClientId(values[0],requireActivity())
+                FaceKiPreferences.saveClientId(values[0],requireActivity())
                 FaceKiPreferences.saveKeyName(values[1],requireActivity())
                 FaceKiPreferences.saveEmail(values[2],requireActivity())
 
                 FacekiVerification.initiateSMSDK(requireActivity(),values[0],values[1])
             }
-           else{
-               Toast.makeText(requireActivity(),"Invalid QR code",Toast.LENGTH_LONG).show()
+            else{
+                Toast.makeText(requireActivity(),"Invalid QR code",Toast.LENGTH_LONG).show()
             }
-       }
-       else{
-           Toast.makeText(activity,"Not able to get value",Toast.LENGTH_LONG).show()
-       }
-   }
+        }
+        else{
+            Toast.makeText(activity,"Not able to get value",Toast.LENGTH_LONG).show()
+        }
+    }
 
     /**
      * go to second fragment of setting
@@ -242,68 +251,87 @@ class FirstFragment : Fragment() {
     var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             // There are no request codes
-                 val data: Intent? = result.data
+            val data: Intent? = result.data
 
-                val uri = data?.data
+            val uri = data?.data
 
-                if (uri != null) {
-                    val mainLooper = Looper.getMainLooper()
+            if (uri != null) {
+                val mainLooper = Looper.getMainLooper()
 
-                   binding.progressBarCyclic.visibility=View.VISIBLE
+                binding.progressBarCyclic.visibility=View.VISIBLE
 
-                    Thread(Runnable {
-                        val bitmap = uriToBitmap(uri)
+                Thread(Runnable {
+                    val bitmap = uriToBitmap(uri)
+
+                    try {
+                        var  ratio : Float = 1.0F
+                        if( bitmap.width > 0){
+                            ratio = (bitmap.height.toFloat()/bitmap.width.toFloat())
+                        }
+//
+                        val resizeBitmap =   Bitmap.createScaledBitmap(bitmap, 300, (ratio*300).toInt(), false)
+
+                        val width = resizeBitmap.width
+                        val height = resizeBitmap.height
+                        val pixels = IntArray(width * height)
+                        resizeBitmap.getPixels(pixels, 0, width, 0, 0, width, height)
+                        resizeBitmap.recycle()
+                        bitmap.recycle()
+
+                        val source = RGBLuminanceSource(width, height, pixels)
+                        val bBitmap = BinaryBitmap(HybridBinarizer(source))
+                        val reader = MultiFormatReader()
+                        val tmpHintsMap: MutableMap<DecodeHintType, Any> = EnumMap(
+                            DecodeHintType::class.java
+                        )
+                        tmpHintsMap[DecodeHintType.TRY_HARDER] = java.lang.Boolean.TRUE
+                        tmpHintsMap[DecodeHintType.POSSIBLE_FORMATS] =
+                            EnumSet.allOf(BarcodeFormat::class.java)
+
                         try {
-
-                            //   bitmap = getResizedBitmap(bitmap,100)!!
-                            val width = bitmap.width
-                            val height = bitmap.height
-                            val pixels = IntArray(width * height)
-                            bitmap.getPixels(pixels, 0, width, 0, 0, width, height)
-                            bitmap.recycle()
-
-                            val source = RGBLuminanceSource(width, height, pixels)
-                            val bBitmap = BinaryBitmap(HybridBinarizer(source))
-                            val reader = MultiFormatReader()
-                            try {
-                                val result: Result = reader.decode(bBitmap)
-                                Handler(mainLooper).post {
-                                    requireActivity().runOnUiThread {
-                                        binding.progressBarCyclic.visibility=View.GONE
-                                        try {
+                            val result: Result = reader.decode(bBitmap,tmpHintsMap)
+                            Handler(mainLooper).post {
+                                requireActivity().runOnUiThread {
+                                    binding.progressBarCyclic.visibility=View.GONE
+                                    try {
                                         val decryptValue =   Utility.decrypt(result.getText(),"ABCDEF1234567890")
                                         goToVerification(decryptValue)
-                                        } catch (e: Exception) {
-                                                    Toast.makeText(
-                                                        requireActivity(),
-                                                        "Invalid QR code",
-                                                        Toast.LENGTH_LONG
-                                                    ).show()
-                                        }
+                                    } catch (e: Exception) {
+                                        e.printStackTrace()
+                                        Toast.makeText(
+                                            requireActivity(),
+                                            "Invalid QR code",
+                                            Toast.LENGTH_LONG
+                                        ).show()
                                     }
                                 }
-
-                            } catch (e: Exception) {
-                                Handler(mainLooper).post {
-                                    requireActivity().runOnUiThread {
-                                        binding.progressBarCyclic.visibility=View.GONE
-                                        Toast.makeText(requireActivity(),"Invalid QR code",Toast.LENGTH_LONG).show()
-                                    }
-                                }
-
-                                //e.printStackTrace()
                             }
-                        } catch (e: FileNotFoundException) {
+
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+
                             Handler(mainLooper).post {
                                 requireActivity().runOnUiThread {
                                     binding.progressBarCyclic.visibility=View.GONE
                                     Toast.makeText(requireActivity(),"Invalid QR code",Toast.LENGTH_LONG).show()
                                 }
                             }
-                        }
 
-                    }).start()
-                }
+                            //e.printStackTrace()
+                        }
+                    } catch (e: FileNotFoundException) {
+                        e.printStackTrace()
+
+                        Handler(mainLooper).post {
+                            requireActivity().runOnUiThread {
+                                binding.progressBarCyclic.visibility=View.GONE
+                                Toast.makeText(requireActivity(),"Invalid QR code",Toast.LENGTH_LONG).show()
+                            }
+                        }
+                    }
+
+                }).start()
+            }
 
         }
     }
@@ -314,14 +342,14 @@ class FirstFragment : Fragment() {
         val PERMISSIONS = arrayOf(
             Manifest.permission.READ_EXTERNAL_STORAGE,
         )
-          if(hasPermissions(requireContext(), permissions =PERMISSIONS ))     {
+        if(hasPermissions(requireContext(), permissions =PERMISSIONS ))     {
 
             val intent = Intent(
                 Intent.ACTION_PICK,
                 MediaStore.Images.Media.INTERNAL_CONTENT_URI
             )
             intent.type = "image/*"
-              intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false)
+            intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false)
 
 //            intent.putExtra("crop", "true")
 //            intent.putExtra("scale", true)
@@ -331,12 +359,16 @@ class FirstFragment : Fragment() {
 
 
 
-          } else {
+        } else {
 
-              checkPermission.launch(PERMISSIONS)
+            checkPermission.launch(PERMISSIONS)
         }
     }
-
+    fun rotateBitmap(source: Bitmap, angle: Float): Bitmap? {
+        val matrix = Matrix()
+        matrix.postRotate(angle)
+        return Bitmap.createBitmap(source, 0, 0, source.width, source.height, matrix, true)
+    }
     // util method
     private fun hasPermissions(context: Context, permissions: Array<String>): Boolean = permissions.all {
         ActivityCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED
@@ -353,7 +385,7 @@ class FirstFragment : Fragment() {
             val source = ImageDecoder.createSource(requireActivity().contentResolver, uri)
             return ImageDecoder.decodeBitmap(
                 source,
-                ImageDecoder.OnHeaderDecodedListener { decoder, info, source ->
+                ImageDecoder.OnHeaderDecodedListener { decoder, _, _ ->
                     decoder.allocator = ImageDecoder.ALLOCATOR_SOFTWARE
                     decoder.isMutableRequired = true
                 })

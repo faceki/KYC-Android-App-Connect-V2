@@ -9,6 +9,8 @@ import android.media.ExifInterface
 import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
@@ -264,11 +266,15 @@ class FaceDetection : AppCompatActivity(), IApiCallback {
             tempCanvas.drawRoundRect(RectF(x1, y1, x2, y2), 2f, 2f, myRectPaint)*/
             // use this bitmap only for face image
 //            val tb = Bitmap.createBitmap(myBitmap, x1.roundToInt(), y1.roundToInt(), thisFace.width.roundToInt(), thisFace.height.roundToInt())
-
-            path = saveImage(myBitmap!!)
             showCaptureImage(true)
-            items[items.size - 1].imagePath = path.toString()
-            uploadFiles()
+
+            Handler(Looper.getMainLooper()).postDelayed({
+                //Do something after 100ms
+                path = saveImage(myBitmap!!)
+                items[items.size - 1].imagePath = path.toString()
+                uploadFiles()
+            }, 600)
+
 
 //            MyApplication.spinnerStop()
 //            val intent = Intent()
