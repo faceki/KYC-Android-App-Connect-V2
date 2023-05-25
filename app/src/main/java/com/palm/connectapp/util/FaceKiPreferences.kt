@@ -25,9 +25,9 @@ class FaceKiPreferences {
          * @return save email id in preference
          *
          */
-        fun saveEmail(emailId:String,activity: FragmentActivity) {
+        fun saveClientSecret(clientSecret:String,activity: FragmentActivity) {
             val editor =  getPreference(activity).edit()
-            editor.putString("emailid",emailId)
+            editor.putString("clientSecret",clientSecret)
 editor.commit()
         }
 
@@ -36,9 +36,9 @@ editor.commit()
          * @param activity : activity context
          * @return email id from preference
          */
-        fun getEmailId(activity: FragmentActivity):String{
+        fun getClientSecret(activity: FragmentActivity):String{
             val preferences = getPreference(activity)
-            val emailid = preferences.getString("emailid","") as String
+            val emailid = preferences.getString("clientSecret","") as String
             return emailid
         }
 
@@ -100,7 +100,7 @@ editor.commit()
         fun resetPreference(activity: FragmentActivity){
             val editor = getPreference(activity).edit()
             editor.clear()
-            editor.remove("emailid")
+            editor.remove("clientSecret")
             editor.remove("clientid")
              editor.commit()
         }

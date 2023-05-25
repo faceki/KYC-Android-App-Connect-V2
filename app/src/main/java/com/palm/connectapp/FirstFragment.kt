@@ -143,10 +143,10 @@ class FirstFragment : Fragment() {
      * @return void
      */
     private fun callFaceKiVerification(){
-        val emailid = FaceKiPreferences.getEmailId(requireActivity())
+        val clientSecret = FaceKiPreferences.getClientSecret(requireActivity())
 
-        if(emailid != null && emailid.length != 0){
-            val value = FaceKiPreferences.getClientId(requireActivity())  +"|" + FaceKiPreferences.getKeyName(requireActivity())+"|"+ emailid
+        if(clientSecret.isNotEmpty()){
+            val value = FaceKiPreferences.getClientId(requireActivity())  +"|" + FaceKiPreferences.getKeyName(requireActivity())+"|"+ clientSecret
             goToVerification(value)
         }
 //        else
@@ -174,7 +174,7 @@ class FirstFragment : Fragment() {
         codeScanner!!.decodeCallback = DecodeCallback {
             activity?.runOnUiThread{
                 try{
-                    var decryptValue =   Utility.decrypt(it.text,"ABCDEF1234567890")
+                    var decryptValue =   Utility.processDecryption(it.text)
                     goToVerification(decryptValue)
                 }
                 catch (e: Exception){
@@ -223,9 +223,9 @@ class FirstFragment : Fragment() {
 
                 FaceKiPreferences.saveClientId(values[0],requireActivity())
                 FaceKiPreferences.saveKeyName(values[1],requireActivity())
-                FaceKiPreferences.saveEmail(values[2],requireActivity())
+                FaceKiPreferences.saveClientSecret(values[2],requireActivity())
 
-                FacekiVerification.initiateSMSDK(requireActivity(),values[0],values[1])
+                FacekiVerification.initiateSMSDK(requireActivity(),values[0],values[2])
             }
             else{
                 Toast.makeText(requireActivity(),"Invalid QR code",Toast.LENGTH_LONG).show()
@@ -294,7 +294,7 @@ class FirstFragment : Fragment() {
                                 requireActivity().runOnUiThread {
                                     binding.progressBarCyclic.visibility=View.GONE
                                     try {
-                                        val decryptValue =   Utility.decrypt(result.getText(),"ABCDEF1234567890")
+                                        val decryptValue =   Utility.processDecryption(result.text)
                                         goToVerification(decryptValue)
                                     } catch (e: Exception) {
                                         e.printStackTrace()

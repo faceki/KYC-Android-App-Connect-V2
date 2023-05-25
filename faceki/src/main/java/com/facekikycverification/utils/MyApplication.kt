@@ -26,27 +26,21 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 
 class MyApplication : Application() {
-    //public ImageLoaderConfiguration config;
-    //public static ImageLoader loader;
     override fun onCreate() {
         super.onCreate()
         application = this
         ctx = applicationContext
-        //        setImageLoaderConfig();
-//        loader = ImageLoader.getInstance();
-//        loader.init(ImageLoaderConfiguration.createDefault(this));
     }
 
     companion object {
         private lateinit var dialog: Dialog
 
-        //private static SpotsDialog spotsDialog;
         var HEIGHT = "HEIGHT"
         var WIDTH = "WIDTH"
         var SHARED_PREF_NAME = "HOOT_PREF"
         const val FIRST = "first"
         private const val TOKEN = "token"
-        private const val EMAIL = "email"
+        private const val CLIENT_SECRET = "clientSecret"
         private const val PASSWORD = "password"
         private const val KEYSERVERID = "keyserverid"
         private const val DEVICE_ID = "deviceid"
@@ -84,35 +78,6 @@ class MyApplication : Application() {
             dialog.show()
         }
 
-        /*fun setLoginData(
-            country: LoginResponse,
-            context: Context
-        ) {
-            val settings: SharedPreferences =
-                context.getSharedPreferences("LoginData", Context.MODE_PRIVATE)
-            val editor: SharedPreferences.Editor = settings.edit()
-            val gson = Gson()
-            val jsonFavorites = gson.toJson(country)
-            editor.putString("LoginData", jsonFavorites)
-            editor.apply()
-        }
-
-        fun getLoginData(context: Context): LoginResponse? {
-            val settings: SharedPreferences =
-                context.getSharedPreferences("LoginData", Context.MODE_PRIVATE)
-            return if (settings.contains("LoginData")) {
-                val jsonObj = settings.getString("LoginData", null)
-                val gson = Gson()
-                val type = object : TypeToken<LoginResponse>() {
-
-                }.type
-                gson.fromJson(jsonObj, type)
-
-            } else
-                null
-        }*/
-
-
         fun isConnectingToInternet(context: Context): Boolean {
             var connected = false
             val connectivity = context
@@ -125,7 +90,7 @@ class MyApplication : Application() {
         fun myEmail(): String? {
             var userEmail = ""
             val sp = ctx!!.getSharedPreferences(SHARED_PREF_NAME, 0)
-            userEmail = sp.getString(EMAIL, "").toString()
+            userEmail = sp.getString(CLIENT_SECRET, "").toString()
             return userEmail
         }
 
@@ -173,14 +138,14 @@ class MyApplication : Application() {
 
         fun saveCrediential(email: String, password: String) {
             val sp = ctx!!.getSharedPreferences(SHARED_PREF_NAME, 0)
-            val e = sp.getString(EMAIL, null)
+            val e = sp.getString(CLIENT_SECRET, null)
             val p = sp.getString(PASSWORD, null)
             if (e != null && e == email && p != null && p == password) {
                 // Do not save, data already in preference
                 return
             }
             val editor = sp.edit()
-            editor.putString(EMAIL, email)
+            editor.putString(CLIENT_SECRET, email)
             editor.putString(PASSWORD, password)
 
             // Commit the edits!

@@ -27,14 +27,18 @@ import androidx.databinding.DataBindingUtil
 import com.facekikycverification.R
 import com.facekikycverification.databinding.ActivityFaceDetectionBinding
 import com.facekikycverification.model.IdsModel
+import com.facekikycverification.model.KycVerificationResponse
 import com.facekikycverification.model.SuccessPageModel
 import com.facekikycverification.network.ApiCall
 import com.facekikycverification.network.IApiCallback
 import com.facekikycverification.network.RetrofitUtils
+import com.facekikycverification.response.GetTokenResponse
 import com.facekikycverification.response.SdkSettingResponse
 import com.facekikycverification.utils.MyApplication
 import com.google.android.gms.vision.Frame
 import com.google.android.gms.vision.face.FaceDetector
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import okhttp3.MultipartBody
 import retrofit2.Response
 import java.io.*
@@ -245,9 +249,13 @@ class FaceDetection : AppCompatActivity(), IApiCallback {
         ).setTrackingEnabled(false)
             .build()
         if (!faceDetector.isOperational) {
-            AlertDialog.Builder(applicationContext)
-                .setMessage(getString(R.string.could_not_set_up_the_face_detector)).show()
-            return
+            try {
+                AlertDialog.Builder(applicationContext)
+                    .setMessage(getString(R.string.could_not_set_up_the_face_detector)).show()
+                return
+            }catch (e :Exception){
+                return
+            }
         }
 
         //detect faces
@@ -349,7 +357,14 @@ class FaceDetection : AppCompatActivity(), IApiCallback {
         if (type == "UploadFiles") {
             val responseGet: Response<Any> = data as Response<Any>
             if (responseGet.isSuccessful) {
-                setResponse("success", "")
+                val objectType = object : TypeToken<KycVerificationResponse>() {}.type
+                val kycVerificationResponse: KycVerificationResponse = Gson().fromJson(Gson().toJson(responseGet.body()), objectType)
+                if(kycVerificationResponse.data?.error==null){
+                    setResponse("success", "")
+                } else {
+                    setResponse("fail", kycVerificationResponse.data.error.message ?:"")
+                }
+
                 if (items.size - 1 != position)
                     uploadFiles()
             } else {
@@ -376,13 +391,13 @@ class FaceDetection : AppCompatActivity(), IApiCallback {
                 successPageModel.image = R.drawable.fail_gif
                 successPageModel.title = getString(R.string.invalid)
                 successPageModel.errorMessage = error
-                successPageModel.link = ssr?.response?.invalid_redirect_url
+                successPageModel.link = ssr?.data?.invalid_redirect_url
             }
             "success" -> {
                 successPageModel.image = R.drawable.success_gif
                 successPageModel.title = getString(R.string.successful)
-                successPageModel.errorMessage = ssr?.response?.success_meaasge
-                successPageModel.link = ssr?.response?.success_redirect_url
+                successPageModel.errorMessage = ssr?.data?.success_meaasge
+                successPageModel.link = ssr?.data?.success_redirect_url
             }
         }
 

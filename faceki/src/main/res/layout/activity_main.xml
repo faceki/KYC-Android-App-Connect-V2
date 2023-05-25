@@ -7,6 +7,6 @@
     android:background="@drawable/splash"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context=".ui.MainActivity">
+    tools:context=".ui.FacekiActivity">
 
 </LinearLayout>

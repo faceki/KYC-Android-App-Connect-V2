@@ -32,8 +32,8 @@ class ApiCall<Req, Res> private constructor() {
             }
     }
 
-    fun getToken(map: HashMap<String, String>, iApiCallback: IApiCallback) {
-        val call: Call<Any> = service!!.getToken(map)
+    fun getToken(clientId: String,clientSecret: String, iApiCallback: IApiCallback) {
+        val call: Call<Any> = service!!.getToken(clientId,clientSecret)
         call.enqueue(object : Callback<Any> {
             override fun onResponse(call: Call<Any>, responseGet: Response<Any?>) {
                 iApiCallback.onSuccess("GetToken", responseGet)

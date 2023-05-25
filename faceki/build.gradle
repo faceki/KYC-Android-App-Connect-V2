@@ -5,20 +5,31 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        debug {
+            storeFile file('/Users/vj/StudioProjects/FaceKi-AppConnect-Android/app/faceki.jks')
+            storePassword 'android'
+            keyAlias 'android'
+            keyPassword 'android'
+        }
+    }
     compileSdk 31
 
     defaultConfig {
         minSdk 21
         targetSdk 31
-        versionCode 1
-        versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
+        buildConfigField "String", "BASE_URL", "\"https://apidev.facechain.org/\""
     }
 
     buildTypes {
+        debug {
+            buildConfigField "String", "BASE_URL", "\"https://apidev.facechain.org/\""
+        }
         release {
+            buildConfigField "String", "BASE_URL", "\"https://sdk.faceki.com/\""
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
@@ -35,6 +46,8 @@ android {
         //noinspection DataBindingWithoutKapt
         dataBinding true
     }
+    buildToolsVersion '31.0.0'
+    namespace 'com.facekikycverification'
 }
 
 dependencies {
@@ -61,8 +74,8 @@ dependencies {
 
     //Retrofit
     implementation 'com.squareup.okhttp3:logging-interceptor:3.10.0'
-    implementation 'com.squareup.retrofit2:retrofit:2.5.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
 
     //Gif
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.17'

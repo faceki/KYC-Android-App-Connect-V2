@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 object RestClient {
-    var BASE_URL = "https://app.faceki.com/"
+    var BASE_URL = BuildConfig.BASE_URL
     var apiRestInterfaces: IRestInterfaces? = null
     @JvmStatic
     val client: IRestInterfaces?

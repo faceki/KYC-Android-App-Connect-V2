@@ -8,11 +8,11 @@ class FacekiVerification {
 
     companion object {
 
-        fun initiateSMSDK(context: Context, clientId: String, email: String) {
+        fun initiateSMSDK(context: Context, clientId: String, clientSecret: String) {
             context.startActivity(
                 Intent(context, SdkSetting::class.java)
                     .putExtra("ClientId", clientId)
-                    .putExtra("Email", email)
+                    .putExtra("clientSecret", clientSecret)
             )
         }
 
@@ -20,7 +20,7 @@ class FacekiVerification {
             context.startActivity(
                 Intent(context, SdkSetting::class.java)
                     .putExtra("ClientId", SdkSetting.sdkSettingInstance.clientId)
-                    .putExtra("Email", SdkSetting.sdkSettingInstance.email)
+                    .putExtra("clientSecret", SdkSetting.sdkSettingInstance.clientSecret)
             )
         }
     }

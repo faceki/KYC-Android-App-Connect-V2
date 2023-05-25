@@ -2,12 +2,18 @@ package com.palm.connectapp.util
 
 import android.util.Base64
 import android.util.Log
+import org.apache.commons.codec.DecoderException
+import org.apache.commons.codec.binary.Hex
+import org.bouncycastle.asn1.pkcs.EncryptedData
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import java.io.UnsupportedEncodingException
+import java.security.InvalidAlgorithmParameterException
 import java.security.InvalidKeyException
+import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 import java.security.Security
 import javax.crypto.*
+import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
 
 
@@ -111,13 +117,73 @@ class Utility {
 
                 return null
             }
+            fun processDecryption(encryptedData: String?) : String?{
+                val key = generateKey()
+                val ivParameterSpec = generateIv()
+                val algorithm = "AES/CBC/PKCS5Padding"
+                val plainText = decrypt(algorithm, encryptedData, key, ivParameterSpec)
+                return plainText
+            }
+            @Throws(
+                NoSuchPaddingException::class,
+                NoSuchAlgorithmException::class,
+                DecoderException::class,
+                InvalidAlgorithmParameterException::class,
+                InvalidKeyException::class,
+                IllegalBlockSizeException::class,
+                BadPaddingException::class
+            )
+            fun decrypt(
+                algorithm: String?,
+                cipherText: String?,
+                key: SecretKey?,
+                iv: IvParameterSpec?
+            ): String {
+                val cipher = Cipher.getInstance(algorithm)
+                cipher.init(Cipher.DECRYPT_MODE, key, iv)
+                val decodeHex = Hex.decodeHex(cipherText)
+                val plainText = cipher.doFinal(decodeHex)
+                return String(plainText)
+            }
 
+            @Throws(NoSuchAlgorithmException::class)
+            fun generateIv(): IvParameterSpec {
+                val md = MessageDigest.getInstance("SHA-512")
+                val messageDigest = md.digest(vi.toByteArray())
+                val chars = Hex.encodeHex(messageDigest)
+                val hashText = String(chars).substring(0, 16)
+                return IvParameterSpec(hashText.toByteArray())
+            }
 
+            @Throws(NoSuchAlgorithmException::class)
+            fun generateKey(): SecretKey {
+                val md = MessageDigest.getInstance("SHA-512")
+                val messageDigest = md.digest(key.toByteArray())
+                val chars = Hex.encodeHex(messageDigest)
+                val hashText = String(chars).substring(0, 32)
+                return SecretKeySpec(hashText.toByteArray(), 0, hashText.toByteArray().size, "AES")
+            }
+
+            @Throws(
+                NoSuchPaddingException::class,
+                NoSuchAlgorithmException::class,
+                IllegalBlockSizeException::class,
+                BadPaddingException::class,
+                InvalidAlgorithmParameterException::class,
+                InvalidKeyException::class
+            )
+            fun encrypt(
+                algorithm: String?,
+                input: String,
+                key: SecretKey?,
+                iv: IvParameterSpec?
+            ): String {
+                val cipher = Cipher.getInstance(algorithm)
+                cipher.init(Cipher.ENCRYPT_MODE, key, iv)
+                val cipherText = cipher.doFinal(input.toByteArray())
+                return String(Hex.encodeHex(cipherText))
+            }
         }
-
-
-
-
-
-
 }
+const val key = "$%FAcki-2023^#"
+const val vi = "FAcki-2023"

@@ -3,8 +3,8 @@ package com.facekikycverification.response
 import java.io.Serializable
 
 data class SdkSettingResponse(
-    val response: Response,
-    val success: Boolean
+    val data: Response,
+    val responseCode: Int
 ) : Serializable {
     data class Response(
         val declined_meaasge: String,
@@ -16,6 +16,29 @@ data class SdkSettingResponse(
         val invalid_redirect_url: String,
         val number_of_doc: Int,
         val success_meaasge: String,
-        val success_redirect_url: String
+        val success_redirect_url: String,
+        val _id: String?,
+        val companyId: String?,
+        val allowedCountries: List<String>?,
+        val allowedKycDocuments: List<String>?,
+        val allowedNationalities: List<String>?,
+        val invalidDocuments: List<String>?,
+        val createdAt: String?,
+        val dataStorageTime: String?,
+        val declined: RedirectData?,
+        val invalid: RedirectData?,
+        val success: RedirectData?,
+        val isRecapturedDocumentInvalid: Boolean?,
+        val multiKYCEnabled: Boolean?,
+        val storedData: Boolean?,
+        val link: String?,
+        val livenessCheckType: String?,
+        val status: String?,
+        val updatedAt: String?,
+        val validAge: Int?,
+    ) : Serializable
+    data class RedirectData(
+        val redirect_url: String?,
+        val message: String?
     ) : Serializable
 }
