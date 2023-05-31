@@ -1,7 +1,7 @@
 package com.facekikycverification.model
 
 data class KycVerificationResponse(
-    val responseCode: Long?,
+    val responseCode: Int?,
     val data: Data?
 ){
     data class Data(

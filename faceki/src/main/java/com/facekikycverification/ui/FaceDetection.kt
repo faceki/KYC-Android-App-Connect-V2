@@ -359,10 +359,10 @@ class FaceDetection : AppCompatActivity(), IApiCallback {
             if (responseGet.isSuccessful) {
                 val objectType = object : TypeToken<KycVerificationResponse>() {}.type
                 val kycVerificationResponse: KycVerificationResponse = Gson().fromJson(Gson().toJson(responseGet.body()), objectType)
-                if(kycVerificationResponse.data?.error==null){
+                if(kycVerificationResponse.responseCode == 0){
                     setResponse("success", "")
                 } else {
-                    setResponse("fail", kycVerificationResponse.data.error.message ?:"")
+                    setResponse("fail", kycVerificationResponse.data?.error?.message ?:"")
                 }
 
                 if (items.size - 1 != position)
